@@ -1,10 +1,15 @@
 import pygame, sys
 
 pygame.init()
+scrInfo = pygame.display.Info()
+print(scrInfo)
 size = width, height = 800, 480
+##size = width, height = scrInfo.current_w, scrInfo.current_h
 speed = [1, 1]
 BLACK = 0, 0, 0
-screen = pygame.display.set_mode(size)
+FullWin = pygame.FULLSCREEN #(全屏)
+Window = pygame.RESIZABLE #(窗口化)
+screen = pygame.display.set_mode(size,Window)
 pygame.display.set_caption("小球游戏")
 ball = pygame.image.load("smallball.png")
 # 获取rect对象
@@ -25,6 +30,11 @@ while True:
                 speed[1] = speed[1] + 1 if speed[1] > 0 else speed[1] - 1
             elif event.key == pygame.K_DOWN:
                 speed[1] = speed[1] if speed[1] == 0 else (abs(speed[1]) - 1) * int(speed[1] / abs(speed[1]))
+            elif event.key == pygame.K_ESCAPE:#退出操作
+                sys.exit()
+        elif event.type == pygame.VIDEORESIZE:
+            size = width, height = event.size[0], event.size[1]
+            screen = pygame.display.set_mode(size,Window)
     ballrect = ballrect.move(speed[0], speed[1])
     if ballrect.left < 0 or ballrect.right > width:
         speed[0] = - speed[0]

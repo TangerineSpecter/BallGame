@@ -5,8 +5,8 @@ scrInfo = pygame.display.Info()
 print(scrInfo)
 size = width, height = 800, 480
 ##size = width, height = scrInfo.current_w, scrInfo.current_h
-speed = [1, 1]
-BLACK = 0, 0, 0
+speed = [1, 1] ##小球速度
+BLACK = 0, 0, 0 ##背景颜色
 FullWin = pygame.FULLSCREEN #(全屏)
 Window = pygame.RESIZABLE #(窗口化)
 screen = pygame.display.set_mode(size,Window)
@@ -16,6 +16,7 @@ ball = pygame.image.load("smallball.png")
 ballrect = ball.get_rect()
 fps = 300
 fclock = pygame.time.Clock()
+still = False
 
 while True:
     for event in pygame.event.get():
@@ -35,11 +36,26 @@ while True:
         elif event.type == pygame.VIDEORESIZE:
             size = width, height = event.size[0], event.size[1]
             screen = pygame.display.set_mode(size,Window)
-    ballrect = ballrect.move(speed[0], speed[1])
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            if event.button == 1:
+                still = True
+        elif event.type == pygame.MOUSEBUTTONUP:
+            still = False
+            if event.button == 1:
+                ballrect = ballrect.move(event.pos[0] - ballrect.left, event.pos[1] - ballrect.top)
+        elif event.type == pygame.MOUSEMOTION:
+            if event.buttons[0] == 1:
+                ballrect = ballrect.move(event.pos[0] - ballrect.left, event.pos[1] - ballrect.top)
+    if pygame.display.get_active() and not still:
+        ballrect = ballrect.move(speed[0], speed[1])
     if ballrect.left < 0 or ballrect.right > width:
         speed[0] = - speed[0]
+        if ballrect.right > width and ballrect.right + speed[0] > ballrect.right:
+            speed[0] = - speed[0]
     if ballrect.top < 0 or ballrect.bottom > height:
         speed[1] = - speed[1]
+        if ballrect.bottom > height and ballrect.bottom + speed[1] > ballrect.bottom:
+            speed[1] = - speed[1]
     screen.fill(BLACK)
     # 将小球图形绘制到rect对象位置上
     screen.blit(ball, ballrect)

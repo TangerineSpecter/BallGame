@@ -19,6 +19,8 @@ fclock = pygame.time.Clock()
 still = False
 
 while True:
+    uevent = pygame.event.Event(pygame.KEYDOWN,{"unicode":233,"key":pygame.K_RIGHT,"mod":pygame.K_RIGHT})
+    pygame.event.post(uevent)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             sys.exit()

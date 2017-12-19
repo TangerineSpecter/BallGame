@@ -14,13 +14,18 @@ pygame.display.set_caption("小球游戏")
 ball = pygame.image.load("smallball.png")
 # 获取rect对象
 ballrect = ball.get_rect()
-fps = 300
+fps = 24
 fclock = pygame.time.Clock()
 still = False
 
 while True:
-    uevent = pygame.event.Event(pygame.KEYDOWN,{"unicode":233,"key":pygame.K_RIGHT,"mod":pygame.K_RIGHT})
-    pygame.event.post(uevent)
+    revent = pygame.event.Event(pygame.KEYDOWN,{"unicode":233,"key":pygame.K_RIGHT,"mod":pygame.K_RIGHT})
+    levent = pygame.event.Event(pygame.KEYDOWN,{"unicode":233,"key":pygame.K_LEFT,"mod":pygame.K_LEFT})
+    if speed[0] < 10:
+        pygame.event.post(revent)
+    if speed[0] > 10:
+        pygame.event.post(levent)
+    print(speed[0])
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             sys.exit()

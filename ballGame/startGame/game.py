@@ -1,4 +1,5 @@
 import pygame, sys
+import pygame.freetype
 
 pygame.init()
 scrInfo = pygame.display.Info()
@@ -18,6 +19,10 @@ fps = 24
 fclock = pygame.time.Clock()
 still = False
 bgcolor = pygame.Color("black")
+ORANGE = 250,128,10
+
+f1 = pygame.freetype.Font("C://Windows//Fonts//msyh.ttc",36)
+f1rect = f1.render_to(screen,(400,240),"pygame小球游戏",fgcolor=ORANGE,size=50)
 
 def RGBChannel(a):
     return 0 if a<0 else (255 if a>255 else int(a))

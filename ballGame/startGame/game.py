@@ -17,6 +17,10 @@ ballrect = ball.get_rect()
 fps = 24
 fclock = pygame.time.Clock()
 still = False
+bgcolor = pygame.Color("black")
+
+def RGBChannel(a):
+    return 0 if a<0 else (255 if a>255 else int(a))
 
 while True:
     revent = pygame.event.Event(pygame.KEYDOWN,{"unicode":233,"key":pygame.K_RIGHT,"mod":pygame.K_RIGHT})
@@ -63,7 +67,11 @@ while True:
         speed[1] = - speed[1]
         if ballrect.bottom > height and ballrect.bottom + speed[1] > ballrect.bottom:
             speed[1] = - speed[1]
-    screen.fill(BLACK)
+    bgcolor.r = RGBChannel(ballrect.left*255/width)
+    bgcolor.g = RGBChannel(ballrect.top*255/height)
+    bgcolor.b = RGBChannel(min(speed[0],speed[1])*255/max(speed[0],speed[1],1))
+
+    screen.fill(bgcolor)
     # 将小球图形绘制到rect对象位置上
     screen.blit(ball, ballrect)
     pygame.display.update()
